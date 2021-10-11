@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.parquerufinotamayo.R
 import com.example.parquerufinotamayo.LoginUtils
 import com.example.parquerufinotamayo.model.Model
@@ -20,15 +19,22 @@ import com.example.parquerufinotamayo.model.repository.responseinterface.ILogin
 class LoginActivity : AppCompatActivity() {
 
     lateinit var btnLogin : Button;
+    lateinit var btnCrearCuenta : Button;
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.i("Hole", "Hols")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         btnLogin = findViewById(R.id.btnLogin);
+        btnCrearCuenta = findViewById(R.id.btnCrearCuenta);
 
+        btnCrearCuenta.setOnClickListener{
+            val crearCuentaActivityIntent =
+                Intent(applicationContext, CrearCuentaActivity::class.java)
+            crearCuentaActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(crearCuentaActivityIntent)
+        }
 
         btnLogin.setOnClickListener(loginClickListener())
 
@@ -49,9 +55,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun loginClickListener(): View.OnClickListener?{
         return View.OnClickListener {
-            val email = findViewById<EditText>(R.id.etUserLogin).text.toString()
-            val password = findViewById<EditText>(R.id.etPasswordLogin).text.toString()
-            val user = User("anyname", email, password)
+            val email = findViewById<EditText>(R.id.etEmailCrearCuenta).text.toString()
+            val password = findViewById<EditText>(R.id.etPasswordCrearCuenta).text.toString()
+            val user = User("anyname", "anyusername", email, password)
             Model(LoginUtils.getToken(this)).login(user, object : ILogin {
                 override fun onSuccess(token: JwtToken?){
                     Toast.makeText(this@LoginActivity, "Welcome", Toast.LENGTH_SHORT).show()
@@ -97,6 +103,8 @@ class LoginActivity : AppCompatActivity() {
         mainActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(mainActivityIntent)
     }
+
+
 
     /*
     private fun login(user : String , password : String) {
