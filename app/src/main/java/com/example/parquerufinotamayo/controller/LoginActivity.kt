@@ -54,7 +54,7 @@ class LoginActivity : AppCompatActivity() {
             val user = User("anyname", email, password)
             Model(LoginUtils.getToken(this)).login(user, object : ILogin {
                 override fun onSuccess(token: JwtToken?){
-                    Toast.makeText(this@LoginActivity, "Welcome", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginActivity, "Acceso exitoso", Toast.LENGTH_SHORT).show()
                     if(token != null){
                         LoginUtils.saveToken(token, this@LoginActivity.applicationContext)
                         //This updates the HttpClient that at this moment might not have a valid token
