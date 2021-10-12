@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.LoginActivity">
+    tools:context=".controller.CrearCuentaActivity">
 
     <ImageView
         android:id="@+id/imageView"
@@ -23,7 +23,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
-        android:hint="Usuario"
+        android:hint="Email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
@@ -49,10 +49,10 @@
         app:startIconDrawable="@drawable/ic_round_lock_24">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:inputType="textPassword"
             android:id="@+id/etPasswordCrearCuenta"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -60,25 +60,71 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:text="Crear Cuenta"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+        app:layout_constraintTop_toBottomOf="@+id/iLTextNombreUsuario" />
 
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:text="REGRESAR A LOGIN"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnCrearCuenta" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/iLTextNombre"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
-        android:text="ENTRAR"
+        android:ems="10"
+        android:hint="Nombre"
+        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iLPasswordLogin" />
+        app:layout_constraintTop_toBottomOf="@+id/iLPasswordLogin"
+        app:startIconDrawable="@drawable/ic_round_person_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextTextNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/iLTextNombreUsuario"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:ems="10"
+        android:hint="Username"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iLTextNombre"
+        app:startIconDrawable="@drawable/ic_round_person_24">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextNombreUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,6 +10,7 @@ import com.example.parquerufinotamayo.model.repository.backendinterface.ReportsA
 import com.example.parquerufinotamayo.model.repository.backendinterface.UsersApi
 import com.example.parquerufinotamayo.model.repository.responseinterface.IGetAllCategories
 import com.example.parquerufinotamayo.model.repository.responseinterface.ILogin
+import com.example.parquerufinotamayo.model.repository.responseinterface.IRegister
 import com.example.parquerufinotamayo.model.repository.responseinterface.INewReport
 import com.google.gson.Gson
 import okhttp3.MediaType
@@ -94,5 +95,28 @@ class Model(private val token:String) {
                 callback.onFailure(t)
             }
         })
+    }
+
+    fun register(user: User, callback: IRegister){
+        val retrofit = RemoteRepository.getRetrofitInstance(token)
+        val callRegister = retrofit.create(UsersApi::class.java).register(user)
+
+        callRegister.enqueue(object : Callback<User?> {
+            override fun onResponse(call: Call<User?>, response: Response<User?>) {
+                if(response.isSuccessful) callback.onSuccess(response.body())
+                else {
+                    val message : String = if (response.errorBody() != null)
+                        response.errorBody()!!.string()
+                    else
+                        response.message()
+                    callback.onNoSuccess(response.code(), message)
+                }
+            }
+
+            override fun onFailure(call: Call<User?>, t: Throwable) {
+                callback.onFailure(t)
+            }
+        })
+
     }
 }
