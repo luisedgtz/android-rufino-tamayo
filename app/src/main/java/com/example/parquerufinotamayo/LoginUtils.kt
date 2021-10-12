@@ -12,6 +12,7 @@ class LoginUtils {
 
         private const val TOKEN_PREFS = "tokenPrefs"
         private const val TOKEN_KEY = "tokenKey"
+        private const val USER_NAME = "anyone"
 
         fun getToken(context: Context): String {
             val sharedPreferences = context.getSharedPreferences(
@@ -23,6 +24,16 @@ class LoginUtils {
             return token!!
         }
 
+        fun getUser(context: Context): String {
+            val sharedPreferences = context.getSharedPreferences(
+                TOKEN_PREFS,
+                AppCompatActivity.MODE_PRIVATE
+            )
+            val user = sharedPreferences.getString(USER_NAME, "WRONG_USER")
+            Log.i("Utils", "User is ${user!!}")
+            return user!!
+        }
+
         fun saveToken(token: JwtToken, context:Context){
             val sharedPreferences = context.getSharedPreferences(
                 TOKEN_PREFS,
@@ -30,7 +41,9 @@ class LoginUtils {
             )
             val editor = sharedPreferences.edit()
             editor.putString(TOKEN_KEY, token.token)
-            editor.commit()
+            editor.apply()
+            editor.putString(USER_NAME, token.username)
+            editor.apply()
         }
 
         fun isUserLoggedIn(context: Context): Boolean {

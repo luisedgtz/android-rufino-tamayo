@@ -47,10 +47,10 @@ class RemoteRepository {
         }
     }
 
-    class AuthInterceptor(val token: String) : Interceptor {
+    class AuthInterceptor(private val token: String) : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
             val requestBuilder = chain.request().newBuilder()
-            requestBuilder.addHeader("Authorization", "Bearer $token")
+            requestBuilder.addHeader("x-access-token", token)
             return chain.proceed(requestBuilder.build())
         }
     }

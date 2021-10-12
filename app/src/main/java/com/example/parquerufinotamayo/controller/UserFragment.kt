@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
+import android.widget.Toast
 import android.view.ViewGroup
 import com.example.parquerufinotamayo.R
 
@@ -13,4 +15,6 @@ class UserFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_user, container, false)
     }
+
+
 }
