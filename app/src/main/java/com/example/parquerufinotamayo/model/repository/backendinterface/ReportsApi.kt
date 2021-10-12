@@ -12,4 +12,7 @@ interface ReportsApi {
         @Part report: MultipartBody.Part,
         @Part reportPhoto: MultipartBody.Part?
     ): Call<Report>
+
+    @GET("reports/all")
+    fun getAllReports(): Call<List<Report>>
 }

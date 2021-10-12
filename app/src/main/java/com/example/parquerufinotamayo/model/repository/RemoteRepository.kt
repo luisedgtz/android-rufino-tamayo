@@ -2,6 +2,8 @@ package com.example.parquerufinotamayo.model.repository
 
 import android.content.Context
 import com.example.parquerufinotamayo.LoginUtils.Companion.BASE_URL
+import com.squareup.picasso.OkHttp3Downloader
+import com.squareup.picasso.Picasso
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -12,6 +14,7 @@ class RemoteRepository {
     companion object {
         private lateinit var client: OkHttpClient
         private lateinit var  retrofitInstance: Retrofit
+        private lateinit var picasso: Picasso
 
         fun updateRemoteReferences(token: String, context: Context){
             client = OkHttpClient.Builder()
@@ -44,6 +47,15 @@ class RemoteRepository {
                     .build()
             }
             return retrofitInstance
+        }
+
+        fun getPicassoInstance(context: Context, token: String): Picasso {
+            getClient(token)
+            if (!::picasso.isInitialized) {
+                picasso =
+                    Picasso.Builder(context).downloader(OkHttp3Downloader(client)).build()
+            }
+            return picasso
         }
     }
 
