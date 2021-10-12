@@ -40,8 +40,7 @@ class NewReportFragment : Fragment() {
     private lateinit var editTxtRpTitle : EditText
     private lateinit var editTxtDescription : EditText
     private lateinit var reportImage: ImageView
-    private lateinit var btnSelect: ImageButton
-    private lateinit var txtCatgs: TextView
+    private lateinit var txtCategories : AutoCompleteTextView
 
     private lateinit var model : Model
     private lateinit var imageByteArray: ByteArray
@@ -61,26 +60,14 @@ class NewReportFragment : Fragment() {
         btnTakePhoto = view.findViewById(R.id.btnTakePhoto)
         btnEndRp = view.findViewById(R.id.btnEndRp)
         btnFromGallery = view.findViewById(R.id.btnFromGallery)
-        btnSelect = view.findViewById(R.id.btnSelect)
         reportImage = view.findViewById(R.id.reportImage)
         editTxtDescription = view.findViewById(R.id.editTxtDescription)
         editTxtRpTitle = view.findViewById(R.id.editTxtRpTitle)
-        txtCatgs = view.findViewById(R.id.txtCatgs)
+        txtCategories = view.findViewById(R.id.txtCategories)
         val lista = getSpinnerList()
 
-        btnSelect.setOnClickListener{
-            val alertDialog = AlertDialog.Builder(requireContext())
-            val array = arrayOfNulls<String>(lista.size)
-            for (i in lista.indices){
-                array[i] = lista[i]
-            }
-            alertDialog.setTitle("Categorías")
-            alertDialog.setItems(array){ _: DialogInterface, position: Int ->
-                txtCatgs.text = array[position]
-            }
-            alertDialog.setCancelable(true)
-            alertDialog.show()
-        }
+        val adapter = context?.let { ArrayAdapter(it, R.layout.list_item, lista) };
+        txtCategories.setAdapter(adapter)
 
         btnTakePhoto.setOnClickListener(clickListenerForTakePhoto())
         btnEndRp.setOnClickListener(clickListenerForNewReport())
@@ -128,7 +115,7 @@ class NewReportFragment : Fragment() {
                 txtReportTitle.text.toString(),
                 txtReportDescription.text.toString(),
                 null,
-                txtCatgs.text.toString()
+                txtCategories.text.toString()
             )
             model.newReport(report, imageByteArray, object : INewReport {
                 override fun onSuccess(report: Report?) {
