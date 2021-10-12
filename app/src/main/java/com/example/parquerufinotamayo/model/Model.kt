@@ -16,8 +16,27 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.http.Body
 
 class Model(private val token:String) {
+
+    fun getUserReports(username: String,callback: IGetAllReports) {
+        val retrofit = RemoteRepository.getRetrofitInstance(token)
+        val callGetUser = retrofit.create(ReportsApi::class.java).getUserReports(username)
+        callGetUser.enqueue(object : Callback<List<Report>?> {
+            override fun onResponse(
+                call: Call<List<Report>?>,
+                response: Response<List<Report>?>
+            ) {
+                if (response.isSuccessful) callback.onSuccess(response.body())
+                else callback.onNoSuccess(response.code(), response.message())
+            }
+
+            override fun onFailure(call: Call<List<Report>?>, t: Throwable) {
+                callback.onFailure(t)
+            }
+        })
+    }
 
     fun getAllReports(callback: IGetAllReports) {
         val retrofit = RemoteRepository.getRetrofitInstance(token)

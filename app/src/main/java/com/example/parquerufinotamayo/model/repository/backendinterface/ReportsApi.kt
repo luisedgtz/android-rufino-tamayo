@@ -15,4 +15,9 @@ interface ReportsApi {
 
     @GET("reports/all")
     fun getAllReports(): Call<List<Report>>
+
+    @GET("reports/userdata")
+    fun getUserReports(
+        @Query("username") username: String?
+    ): Call<List<Report>>
 }
