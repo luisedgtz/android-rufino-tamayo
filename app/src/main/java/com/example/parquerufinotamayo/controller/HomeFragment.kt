@@ -1,4 +1,4 @@
-package com.example.parquerufinotamayo.Fragments
+package com.example.parquerufinotamayo.controller
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

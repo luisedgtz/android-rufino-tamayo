@@ -1,11 +1,8 @@
-package com.example.parquerufinotamayo
+package com.example.parquerufinotamayo.controller
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.FragmentManager
-import com.example.parquerufinotamayo.Fragments.HomeFragment
-import com.example.parquerufinotamayo.Fragments.NewReportFragment
-import com.example.parquerufinotamayo.Fragments.UserFragment
+import com.example.parquerufinotamayo.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -41,6 +38,4 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView.setOnNavigationItemSelectedListener(bottomTabListener);
 
     }
-
-
 }
