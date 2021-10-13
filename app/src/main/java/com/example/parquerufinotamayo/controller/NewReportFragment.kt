@@ -120,6 +120,10 @@ class NewReportFragment : Fragment() {
             model.newReport(report, imageByteArray, object : INewReport {
                 override fun onSuccess(report: Report?) {
                     Toast.makeText(requireContext(), "Se añadió correctamente", Toast.LENGTH_SHORT).show()
+                    txtReportTitle.text.clear()
+                    txtCategories.text.clear()
+                    txtReportDescription.text.clear()
+                    reportImage.setImageResource(R.drawable.noimage)
                     //parentFragmentManager.beginTransaction().replace(R.id.flContainer, HomeFragment()).commit();
                     //val bottomNavigationView : BottomNavigationView = view.findViewById(R.id.bottom_navigation);
                     //bottomNavigationView.selectedItemId = R.id.action_home;
