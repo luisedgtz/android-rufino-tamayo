@@ -8,7 +8,7 @@ import com.example.parquerufinotamayo.model.entities.JwtToken
 
 class LoginUtils {
     companion object {
-        val BASE_URL = "http://10.0.2.2:3000/"
+        val BASE_URL = "http://100.24.228.237:10017/"
 
         private const val TOKEN_PREFS = "tokenPrefs"
         private const val TOKEN_KEY = "tokenKey"
