@@ -1,14 +1,13 @@
 package com.example.parquerufinotamayo.controller
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
-import android.widget.Toast
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.parquerufinotamayo.LoginUtils
@@ -17,12 +16,15 @@ import com.example.parquerufinotamayo.model.Model
 import com.example.parquerufinotamayo.model.entities.Report
 import com.example.parquerufinotamayo.model.entities.ReportGet
 import com.example.parquerufinotamayo.model.repository.responseinterface.IGetAllReports
+import com.example.parquerufinotamayo.model.repository.responseinterface.INewReport
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class UserFragment : Fragment() {
 
     private lateinit var model: Model
     private lateinit var tvUsername: TextView
+    private lateinit var btnUserSettings : ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +41,16 @@ class UserFragment : Fragment() {
         tvUsername = requireView().findViewById(R.id.tvUsername)
         tvUsername.text = LoginUtils.getUser(requireContext())
         Log.i("TYPE", LoginUtils.getUserType(requireContext()))
+        btnUserSettings = requireView().findViewById(R.id.btnUserSettings)
         showReports()
+        btnUserSettings.setOnClickListener(clickOnUserSettings())
+    }
+
+    private fun clickOnUserSettings(): View.OnClickListener? {
+        return View.OnClickListener {
+            LoginUtils.deleteInfo(requireContext())
+            returnLogin()
+        }
     }
 
     private fun showReports() {
@@ -76,5 +87,12 @@ class UserFragment : Fragment() {
                 Log.e("addUser", t.message.toString())
             }
         })
+    }
+
+    private fun returnLogin(){
+        val mainActivityIntent =
+            Intent(requireContext(), LoginActivity::class.java)
+        mainActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(mainActivityIntent)
     }
 }
