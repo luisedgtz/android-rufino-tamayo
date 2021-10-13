@@ -63,7 +63,7 @@ class NewReportFragment : Fragment() {
         reportImage = view.findViewById(R.id.reportImage)
         editTxtDescription = view.findViewById(R.id.editTxtDescription)
         editTxtRpTitle = view.findViewById(R.id.editTxtRpTitle)
-        txtCategories = view.findViewById(R.id.txtCategories)
+        txtCategories = view.findViewById(R.id.txtReportSolve)
         val lista = getSpinnerList()
 
         val adapter = context?.let { ArrayAdapter(it, R.layout.list_item, lista) };
@@ -120,9 +120,9 @@ class NewReportFragment : Fragment() {
             model.newReport(report, imageByteArray, object : INewReport {
                 override fun onSuccess(report: Report?) {
                     Toast.makeText(requireContext(), "Se añadió correctamente", Toast.LENGTH_SHORT).show()
-                    parentFragmentManager.beginTransaction().replace(R.id.flContainer, HomeFragment()).commit();
-                    val bottomNavigationView : BottomNavigationView = requireActivity().findViewById(R.id.bottom_navigation);
-                    bottomNavigationView.selectedItemId = R.id.action_home;
+                    //parentFragmentManager.beginTransaction().replace(R.id.flContainer, HomeFragment()).commit();
+                    //val bottomNavigationView : BottomNavigationView = view.findViewById(R.id.bottom_navigation);
+                    //bottomNavigationView.selectedItemId = R.id.action_home;
                 }
 
                 override fun onNoSuccess(code: Int, message: String) {

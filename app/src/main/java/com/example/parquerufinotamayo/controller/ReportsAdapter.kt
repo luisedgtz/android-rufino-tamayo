@@ -11,17 +11,18 @@ import com.example.parquerufinotamayo.R
 import com.example.parquerufinotamayo.model.entities.Report
 import com.example.parquerufinotamayo.model.repository.RemoteRepository
 import com.example.parquerufinotamayo.LoginUtils.Companion.BASE_URL
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
+import com.example.parquerufinotamayo.model.entities.ReportGet
+
 
 class ReportsAdapter (
-    private val reports: List<Report>,
+    private val reports: List<ReportGet>,
     private val clickListener: OnItemClickListener,
     private val token: String,
     private val context: Context
 ) :
     RecyclerView.Adapter<ReportsAdapter.ViewHolder>() {
         interface OnItemClickListener {
-            fun onItemClick(item: Report)
+            fun onItemClick(item: ReportGet)
         }
 
         inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -39,7 +40,7 @@ class ReportsAdapter (
         }
 
         override fun onBindViewHolder(viewHolder: ReportsAdapter.ViewHolder, position: Int) {
-            val report: Report = reports[position]
+            val report: ReportGet = reports[position]
             viewHolder.tvTitle.text = report.title
             viewHolder.tvCategory.text = report.category
             viewHolder.tvDescription.text = report.description

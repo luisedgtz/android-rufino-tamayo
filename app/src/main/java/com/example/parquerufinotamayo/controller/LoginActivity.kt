@@ -38,19 +38,11 @@ class LoginActivity : AppCompatActivity() {
 
         btnLogin.setOnClickListener(loginClickListener())
 
-        if(LoginUtils.isUserLoggedIn(this)) advanceToMainActivity()
-
-        /*
-        btnLogin.setOnClickListener {
-            var user : String = etUserLogin.text.toString();
-            var password : String = etPasswordLogin.text.toString();
-
-            if (user.isEmpty() || password.isEmpty()) {
-                Toast.makeText(applicationContext, "Uno de los datos está vacío", Toast.LENGTH_SHORT).show();
-            } else {
-                login(user, password);
-            }
-         */
+        if(LoginUtils.isUserLoggedIn(this) && LoginUtils.getUserType(this) == "user"){
+            advanceToMainActivity()
+        }else if(LoginUtils.isUserLoggedIn(this) && LoginUtils.getUserType(this) == "admin"){
+            advanceToAdminActivity()
+        }
     }
 
     private fun loginClickListener(): View.OnClickListener?{
@@ -65,7 +57,11 @@ class LoginActivity : AppCompatActivity() {
                         LoginUtils.saveToken(token, this@LoginActivity.applicationContext)
                         //This updates the HttpClient that at this moment might not have a valid token
                         RemoteRepository.updateRemoteReferences(token.token, this@LoginActivity);
-                        advanceToMainActivity()
+                        if(LoginUtils.getUserType(this@LoginActivity) == "user"){
+                            advanceToMainActivity()
+                        }else if(LoginUtils.getUserType(this@LoginActivity) == "admin"){
+                            advanceToAdminActivity()
+                        }
                     } else {
                         Toast.makeText(
                             this@LoginActivity,
@@ -104,7 +100,12 @@ class LoginActivity : AppCompatActivity() {
         startActivity(mainActivityIntent)
     }
 
-
+    private fun advanceToAdminActivity(){
+        val adminActivityIntent =
+            Intent(applicationContext, AdminActivity::class.java)
+        adminActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(adminActivityIntent)
+    }
 
     /*
     private fun login(user : String , password : String) {

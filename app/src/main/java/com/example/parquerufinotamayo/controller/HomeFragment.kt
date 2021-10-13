@@ -13,6 +13,7 @@ import com.example.parquerufinotamayo.LoginUtils
 import com.example.parquerufinotamayo.R
 import com.example.parquerufinotamayo.model.Model
 import com.example.parquerufinotamayo.model.entities.Report
+import com.example.parquerufinotamayo.model.entities.ReportGet
 import com.example.parquerufinotamayo.model.repository.responseinterface.IGetAllReports
 
 class HomeFragment : Fragment() {
@@ -36,12 +37,12 @@ class HomeFragment : Fragment() {
 
     private fun showReports() {
         model.getAllReports(object : IGetAllReports {
-            override fun onSuccess(reports: List<Report>?) {
+            override fun onSuccess(reports: List<ReportGet>?) {
                 if (reports != null) {
                     val rvReports = requireView().findViewById<RecyclerView>(R.id.rvReports)
                     val adapter =
                         ReportsAdapter(reports, object : ReportsAdapter.OnItemClickListener {
-                            override fun onItemClick(item: Report) {
+                            override fun onItemClick(item: ReportGet) {
                                 Log.d("HomeFragment", "Report Clicked")
                             }
                         }, LoginUtils.getToken(requireContext()), requireContext())
