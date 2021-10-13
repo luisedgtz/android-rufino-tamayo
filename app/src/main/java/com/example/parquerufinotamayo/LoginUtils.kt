@@ -59,6 +59,16 @@ class LoginUtils {
             editor.apply()
         }
 
+        fun deleteInfo(context:Context){
+            val sharedPreferences = context.getSharedPreferences(
+                TOKEN_PREFS,
+                AppCompatActivity.MODE_PRIVATE
+            )
+            val editor = sharedPreferences.edit()
+            editor.clear()
+            editor.apply()
+        }
+
         fun isUserLoggedIn(context: Context): Boolean {
             val sharedPreferences = context.getSharedPreferences(
                 TOKEN_PREFS,

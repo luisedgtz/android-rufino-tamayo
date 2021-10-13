@@ -1,5 +1,6 @@
 package com.example.parquerufinotamayo.controller
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -32,6 +33,7 @@ class SolveReportFragment : Fragment() {
     private lateinit var txtCatgSolve : TextView
     private lateinit var txtReportSolve : AutoCompleteTextView
     private lateinit var reportGet : ReportGet
+    private lateinit var btnLogOut : ImageButton
     var helper = ""
     var helperUserName = ""
     var idList = ArrayList<String>()
@@ -51,6 +53,7 @@ class SolveReportFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         model = Model(LoginUtils.getToken(requireContext()))
         btnSolve = view.findViewById(R.id.btnSolve)
+        btnLogOut = view.findViewById(R.id.btnLogOut)
         imgSolve = view.findViewById(R.id.imgSolve)
         txtID = view.findViewById(R.id.txtID)
         txtTitleSolve = view.findViewById(R.id.txtTitleSolve)
@@ -108,6 +111,14 @@ class SolveReportFragment : Fragment() {
         }
 
         btnSolve.setOnClickListener(clickListenerForSolveReport())
+        btnLogOut.setOnClickListener(clickOnLogOutButton())
+    }
+
+    private fun clickOnLogOutButton(): View.OnClickListener? {
+        return View.OnClickListener {
+            LoginUtils.deleteInfo(requireContext())
+            returnLogin()
+        }
     }
 
     private fun clickListenerForSolveReport(): View.OnClickListener? {
@@ -198,5 +209,12 @@ class SolveReportFragment : Fragment() {
     private fun getCurrentDate():String{
         val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
         return sdf.format(Date())
+    }
+
+    private fun returnLogin(){
+        val mainActivityIntent =
+            Intent(requireContext(), LoginActivity::class.java)
+        mainActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(mainActivityIntent)
     }
 }
