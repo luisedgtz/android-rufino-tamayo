@@ -1,6 +1,7 @@
 package com.example.parquerufinotamayo.model.repository.backendinterface
 
 import com.example.parquerufinotamayo.model.entities.Report
+import com.example.parquerufinotamayo.model.entities.ReportGet
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -14,10 +15,10 @@ interface ReportsApi {
     ): Call<Report>
 
     @GET("reports/all")
-    fun getAllReports(): Call<List<Report>>
+    fun getAllReports(): Call<List<ReportGet>>
 
     @GET("reports/userdata")
     fun getUserReports(
         @Query("username") username: String?
-    ): Call<List<Report>>
+    ): Call<List<ReportGet>>
 }

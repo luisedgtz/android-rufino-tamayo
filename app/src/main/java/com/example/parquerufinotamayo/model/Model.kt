@@ -1,11 +1,9 @@
 package com.example.parquerufinotamayo.model
 
-import com.example.parquerufinotamayo.model.entities.Category
-import com.example.parquerufinotamayo.model.entities.JwtToken
-import com.example.parquerufinotamayo.model.entities.Report
-import com.example.parquerufinotamayo.model.entities.User
+import com.example.parquerufinotamayo.model.entities.*
 import com.example.parquerufinotamayo.model.repository.RemoteRepository
 import com.example.parquerufinotamayo.model.repository.backendinterface.CategoriesApi
+import com.example.parquerufinotamayo.model.repository.backendinterface.ReportGetApi
 import com.example.parquerufinotamayo.model.repository.backendinterface.ReportsApi
 import com.example.parquerufinotamayo.model.repository.backendinterface.UsersApi
 import com.example.parquerufinotamayo.model.repository.responseinterface.*
@@ -16,23 +14,53 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.http.Body
 
 class Model(private val token:String) {
 
     fun getUserReports(username: String,callback: IGetAllReports) {
         val retrofit = RemoteRepository.getRetrofitInstance(token)
         val callGetUser = retrofit.create(ReportsApi::class.java).getUserReports(username)
-        callGetUser.enqueue(object : Callback<List<Report>?> {
+        callGetUser.enqueue(object : Callback<List<ReportGet>?> {
             override fun onResponse(
-                call: Call<List<Report>?>,
-                response: Response<List<Report>?>
+                call: Call<List<ReportGet>?>,
+                response: Response<List<ReportGet>?>
             ) {
                 if (response.isSuccessful) callback.onSuccess(response.body())
                 else callback.onNoSuccess(response.code(), response.message())
             }
 
-            override fun onFailure(call: Call<List<Report>?>, t: Throwable) {
+            override fun onFailure(call: Call<List<ReportGet>?>, t: Throwable) {
+                callback.onFailure(t)
+            }
+        })
+    }
+
+    fun solveReport(_id: String, report: ReportGet, reportPhotoBytes: ByteArray?, callback: ISolveReport){
+        val bodyReportPhoto =
+            RequestBody.create(MediaType.parse("application/octet-stream"), reportPhotoBytes)
+        val partReportPhoto =
+            MultipartBody.Part.createFormData("photo", "report.png", bodyReportPhoto)
+
+        val reportAsJson = Gson().toJson(report)
+        val reportPart = MultipartBody.Part.createFormData("report", reportAsJson)
+
+        val retrofit = RemoteRepository.getRetrofitInstance(token)
+        val callAddReport: Call<ReportGet> = retrofit.create(ReportGetApi::class.java).solveReport(_id, reportPart, null)
+
+        callAddReport.enqueue(object : Callback<ReportGet?> {
+            override fun onResponse(call: Call<ReportGet?>, response: Response<ReportGet?>) {
+                if (response.isSuccessful) {
+                    callback.onSuccess(report)
+                } else {
+                    val message: String = if (response.errorBody() != null)
+                        response.errorBody()!!.string()
+                    else
+                        response.message()
+                    callback.onNoSuccess(response.code(), message)
+                }
+            }
+
+            override fun onFailure(call: Call<ReportGet?>, t: Throwable) {
                 callback.onFailure(t)
             }
         })
@@ -41,16 +69,16 @@ class Model(private val token:String) {
     fun getAllReports(callback: IGetAllReports) {
         val retrofit = RemoteRepository.getRetrofitInstance(token)
         val callGetUser = retrofit.create(ReportsApi::class.java).getAllReports()
-        callGetUser.enqueue(object : Callback<List<Report>?> {
+        callGetUser.enqueue(object : Callback<List<ReportGet>?> {
             override fun onResponse(
-                call: Call<List<Report>?>,
-                response: Response<List<Report>?>
+                call: Call<List<ReportGet>?>,
+                response: Response<List<ReportGet>?>
             ) {
                 if (response.isSuccessful) callback.onSuccess(response.body())
                 else callback.onNoSuccess(response.code(), response.message())
             }
 
-            override fun onFailure(call: Call<List<Report>?>, t: Throwable) {
+            override fun onFailure(call: Call<List<ReportGet>?>, t: Throwable) {
                 callback.onFailure(t)
             }
         })
@@ -69,6 +97,24 @@ class Model(private val token:String) {
             }
 
             override fun onFailure(call: Call<List<Category>?>, t: Throwable) {
+                callback.onFailure(t)
+            }
+        })
+    }
+
+    fun getReport(_id: String, callback: IGetReport) {
+        val retrofit = RemoteRepository.getRetrofitInstance(token)
+        val callGetReport = retrofit.create(ReportGetApi::class.java).getReport(_id)
+        callGetReport.enqueue(object : Callback<ReportGet?> {
+            override fun onResponse(
+                call: Call<ReportGet?>,
+                response: Response<ReportGet?>
+            ) {
+                if (response.isSuccessful) callback.onSuccess(response.body())
+                else callback.onNoSuccess(response.code(), response.message())
+            }
+
+            override fun onFailure(call: Call<ReportGet?>, t: Throwable) {
                 callback.onFailure(t)
             }
         })
