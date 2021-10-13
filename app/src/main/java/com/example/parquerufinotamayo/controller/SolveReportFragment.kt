@@ -74,7 +74,9 @@ class SolveReportFragment : Fragment() {
                             txtID.text = report._id
                             txtTitleSolve.text = report.title
                             txtDescSolve.text = report.description
-                            txtDateSolve.text = report.creationDate.toString()
+                            val sdf = SimpleDateFormat("dd-MM-yyyy")
+                            val stringDate = sdf.format(report.creationDate)
+                            txtDateSolve.text = stringDate
                             txtUserSolve.text = report.username
                             helperUserName = report.username.toString()
                             txtCatgSolve.text = report.category
@@ -130,6 +132,16 @@ class SolveReportFragment : Fragment() {
                     txtUserSolve.text = "Usuario"
                     txtCatgSolve.text = "Categoría"
                     imgSolve.setImageResource(R.drawable.noimage)
+
+                    txtReportSolve.text.clear();
+                    helper = ""
+                    helperUserName = ""
+                    idList.clear()
+                    val lista = getSpinnerList()
+
+                    val adapter = context?.let { ArrayAdapter(it, R.layout.list_item, lista) };
+                    txtReportSolve.setAdapter(adapter)
+
                 }
 
                 override fun onNoSuccess(code: Int, message: String) {
