@@ -1,6 +1,7 @@
 package com.example.parquerufinotamayo.controller
 
 import android.content.Context
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,7 @@ class ReportsAdapter (
             val tvCategory: TextView = itemView.findViewById(R.id.tvCategoryReport)
             val tvDescription: TextView = itemView.findViewById(R.id.tvDescription)
             val ivPhoto: ImageView = itemView.findViewById(R.id.ivReportPhoto)
+            val ivCheck: ImageView = itemView.findViewById(R.id.ivCheck)
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -44,6 +46,10 @@ class ReportsAdapter (
             viewHolder.tvTitle.text = report.title
             viewHolder.tvCategory.text = report.category
             viewHolder.tvDescription.text = report.description
+
+            if (report.attentionDate == null) {
+                viewHolder.ivCheck.visibility = View.GONE
+            }
 
             if (report.images?.isNotEmpty() == true) {
                 askForImage(report.images!![0], viewHolder)
