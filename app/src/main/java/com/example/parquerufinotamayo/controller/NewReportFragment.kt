@@ -1,6 +1,7 @@
 package com.example.parquerufinotamayo.controller
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -23,6 +24,10 @@ import com.example.parquerufinotamayo.model.entities.Category
 import com.example.parquerufinotamayo.model.entities.Report
 import com.example.parquerufinotamayo.model.repository.responseinterface.IGetAllCategories
 import com.example.parquerufinotamayo.model.repository.responseinterface.INewReport
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.io.ByteArrayOutputStream
 import java.util.*
@@ -32,6 +37,7 @@ import kotlin.collections.ArrayList
 class NewReportFragment : Fragment() {
     companion object{
         private const val CAMERA_PERMISSION_CODE = 100
+        private const val FINE_LOCATION_PERMISSION_CODE = 101
     }
 
     private lateinit var btnTakePhoto : Button
@@ -41,9 +47,13 @@ class NewReportFragment : Fragment() {
     private lateinit var editTxtDescription : EditText
     private lateinit var reportImage: ImageView
     private lateinit var txtCategories : AutoCompleteTextView
+    private lateinit var btnUbi : Button
 
     private lateinit var model : Model
     private lateinit var imageByteArray: ByteArray
+
+    private lateinit var cancellationTokenSource: CancellationTokenSource
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,11 +65,13 @@ class NewReportFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         model = Model(LoginUtils.getToken(requireContext()))
         imageByteArray = ByteArray(0)
         btnTakePhoto = view.findViewById(R.id.btnTakePhoto)
         btnEndRp = view.findViewById(R.id.btnEndRp)
-        btnFromGallery = view.findViewById(R.id.btnFromGallery)
+        //btnFromGallery = view.findViewById(R.id.btnUbi)
+        btnUbi = view.findViewById(R.id.btnUbi)
         reportImage = view.findViewById(R.id.reportImage)
         editTxtDescription = view.findViewById(R.id.editTxtDescription)
         editTxtRpTitle = view.findViewById(R.id.editTxtRpTitle)
@@ -71,6 +83,51 @@ class NewReportFragment : Fragment() {
 
         btnTakePhoto.setOnClickListener(clickListenerForTakePhoto())
         btnEndRp.setOnClickListener(clickListenerForNewReport())
+        //btnFromGallery.setOnClickListener()
+        btnUbi.setOnClickListener(clickForUbi())
+    }
+
+    private fun clickForUbi(): View.OnClickListener? {
+        return View.OnClickListener {
+            val permissionStatus = ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            if (permissionStatus == PackageManager.PERMISSION_DENIED) {
+                Toast.makeText(requireContext(), "No hay acceso a la ubicación", Toast.LENGTH_SHORT).show()
+                requestPermissions(
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    FINE_LOCATION_PERMISSION_CODE
+                )
+            } else {
+                Log.i("tag", "we have the permission, thanks")
+                getUbi()
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getUbi() {
+        cancellationTokenSource = CancellationTokenSource()
+        fusedLocationClient.getCurrentLocation(
+            LocationRequest.PRIORITY_HIGH_ACCURACY,
+            cancellationTokenSource.token
+        ).addOnCanceledListener{
+            Log.i(
+                "currentLocationListener",
+                "The location update request has been cancejled"
+            )
+        }.addOnSuccessListener { location ->
+            Log.i(
+                "currentLocationListener",
+                "Location Obtained! ${location.toString()}"
+            )
+            val sb = StringBuffer()
+            sb.append(editTxtDescription.text).append("\n").append("Latitud: ").append((location.latitude)).append(", Longitud: ").append(location.longitude)
+            editTxtDescription.setText(sb.toString())
+            Toast.makeText(requireContext(), "Ubicación agregada", Toast.LENGTH_SHORT).show()
+            btnUbi.isEnabled = false
+        }
     }
 
     private fun getSpinnerList(): ArrayList<String> {
