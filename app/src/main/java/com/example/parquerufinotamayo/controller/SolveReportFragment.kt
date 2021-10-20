@@ -16,6 +16,7 @@ import com.example.parquerufinotamayo.model.repository.RemoteRepository
 import com.example.parquerufinotamayo.model.repository.responseinterface.IGetAllReports
 import com.example.parquerufinotamayo.model.repository.responseinterface.IGetReport
 import com.example.parquerufinotamayo.model.repository.responseinterface.ISolveReport
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -32,7 +33,7 @@ class SolveReportFragment : Fragment() {
     private lateinit var txtCatgSolve : TextView
     private lateinit var txtReportSolve : AutoCompleteTextView
     private lateinit var reportGet : ReportGet
-    private lateinit var btnLogOut : ImageButton
+    private lateinit var btnLogOut : Button
     var helper = ""
     var helperUserName = ""
     var idList = ArrayList<String>()
@@ -153,7 +154,8 @@ class SolveReportFragment : Fragment() {
 
                     val adapter = context?.let { ArrayAdapter(it, R.layout.list_item, lista) };
                     txtReportSolve.setAdapter(adapter)
-
+                    val bottomNavigationView : BottomNavigationView = requireActivity().findViewById(R.id.bottom_navigationAdmin)
+                    bottomNavigationView.selectedItemId = R.id.action_homeAdmin
                 }
 
                 override fun onNoSuccess(code: Int, message: String) {
