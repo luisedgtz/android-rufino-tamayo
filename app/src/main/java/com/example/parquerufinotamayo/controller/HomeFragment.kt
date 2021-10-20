@@ -35,8 +35,6 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         model = Model(LoginUtils.getToken(requireContext()));
         showReports()
-
-
     }
 
     private fun showReports() {
@@ -45,7 +43,7 @@ class HomeFragment : Fragment() {
                 if (reports != null) {
                     val rvReports = requireView().findViewById<RecyclerView>(R.id.rvReports)
                     val adapter =
-                        ReportsAdapter(reports, object : ReportsAdapter.OnItemClickListener {
+                        ReportsAdapter(reports as MutableList<ReportGet>, object : ReportsAdapter.OnItemClickListener {
                             override fun onItemClick(item: ReportGet) {
                                 val intent = Intent(requireContext(), ReportActivity::class.java)
                                 intent.putExtra("id", item._id)

@@ -36,6 +36,5 @@ class MainActivity : AppCompatActivity() {
 
         //Navigation item selected listener
         bottomNavigationView.setOnNavigationItemSelectedListener(bottomTabListener);
-
     }
 }

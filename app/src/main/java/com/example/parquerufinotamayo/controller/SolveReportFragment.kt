@@ -16,7 +16,6 @@ import com.example.parquerufinotamayo.model.repository.RemoteRepository
 import com.example.parquerufinotamayo.model.repository.responseinterface.IGetAllReports
 import com.example.parquerufinotamayo.model.repository.responseinterface.IGetReport
 import com.example.parquerufinotamayo.model.repository.responseinterface.ISolveReport
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList

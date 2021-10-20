@@ -8,23 +8,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.parquerufinotamayo.LoginUtils
 import com.example.parquerufinotamayo.R
 import com.example.parquerufinotamayo.model.Model
-import com.example.parquerufinotamayo.model.entities.Report
 import com.example.parquerufinotamayo.model.entities.ReportGet
 import com.example.parquerufinotamayo.model.repository.responseinterface.IGetAllReports
-import com.example.parquerufinotamayo.model.repository.responseinterface.INewReport
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class UserFragment : Fragment() {
 
     private lateinit var model: Model
     private lateinit var tvUsername: TextView
-    private lateinit var btnUserSettings : ImageButton
+    private lateinit var btnUserSettings : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +39,7 @@ class UserFragment : Fragment() {
         tvUsername = requireView().findViewById(R.id.tvUsername)
         tvUsername.text = LoginUtils.getUser(requireContext())
         Log.i("TYPE", LoginUtils.getUserType(requireContext()))
-        btnUserSettings = requireView().findViewById(R.id.btnUserSettings)
+        btnUserSettings = requireView().findViewById(R.id.btnUserLogout)
         showReports()
         btnUserSettings.setOnClickListener(clickOnUserSettings())
     }
@@ -59,7 +57,7 @@ class UserFragment : Fragment() {
                 if (reports != null) {
                     val rvReports = requireView().findViewById<RecyclerView>(R.id.rvUserReports)
                     val adapter =
-                        ReportsAdapter(reports, object : ReportsAdapter.OnItemClickListener {
+                        ReportsAdapter(reports as MutableList<ReportGet>, object : ReportsAdapter.OnItemClickListener {
                             override fun onItemClick(item: ReportGet) {
                                 val intent = Intent(requireContext(), ReportActivity::class.java)
                                 intent.putExtra("id", item._id)
@@ -77,6 +75,15 @@ class UserFragment : Fragment() {
                         }, LoginUtils.getToken(requireContext()), requireContext())
                     rvReports.adapter = adapter
                     rvReports.layoutManager = LinearLayoutManager(requireContext())
+
+                    val swipeHandler = object : SwipeToDeleteCallback(requireContext()) {
+                        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                            adapter.removeAt(viewHolder.adapterPosition)
+                        }
+                    }
+
+                    val itemTouchHelper = ItemTouchHelper(swipeHandler)
+                    itemTouchHelper.attachToRecyclerView(rvReports)
                 }
             }
 

@@ -136,9 +136,9 @@ class NewReportFragment : Fragment() {
                     txtCategories.text.clear()
                     txtReportDescription.text.clear()
                     reportImage.setImageResource(R.drawable.noimage)
-                    //parentFragmentManager.beginTransaction().replace(R.id.flContainer, HomeFragment()).commit();
-                    //val bottomNavigationView : BottomNavigationView = view.findViewById(R.id.bottom_navigation);
-                    //bottomNavigationView.selectedItemId = R.id.action_home;
+
+                    val bottomNavigationView : BottomNavigationView = requireActivity().findViewById(R.id.bottom_navigation);
+                    bottomNavigationView.selectedItemId = R.id.action_home
                 }
 
                 override fun onNoSuccess(code: Int, message: String) {

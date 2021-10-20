@@ -1,5 +1,6 @@
 package com.example.parquerufinotamayo.model
 
+import android.util.Log
 import com.example.parquerufinotamayo.model.entities.*
 import com.example.parquerufinotamayo.model.repository.RemoteRepository
 import com.example.parquerufinotamayo.model.repository.backendinterface.CategoriesApi
@@ -32,6 +33,29 @@ class Model(private val token:String) {
             override fun onFailure(call: Call<List<ReportGet>?>, t: Throwable) {
                 callback.onFailure(t)
             }
+        })
+    }
+
+    fun deleteReport(_id: String, report: ReportGet, callback: IDeleteReport) {
+        val retrofit = RemoteRepository.getRetrofitInstance(token)
+        val callDeleteReport: Call<ReportGet> = retrofit.create(ReportGetApi::class.java).deleteReport(_id)
+        callDeleteReport.enqueue(object : Callback<ReportGet> {
+            override fun onResponse(call: Call<ReportGet>, response: Response<ReportGet>) {
+                if (response.isSuccessful) {
+                    callback.onSuccess(report)
+                } else {
+                    val message: String = if (response.errorBody() != null)
+                        response.errorBody()!!.string()
+                    else
+                        response.message()
+                    callback.onNoSuccess(response.code(), message)
+                }
+            }
+
+            override fun onFailure(call: Call<ReportGet>, t: Throwable) {
+                callback.onFailure(t)
+            }
+
         })
     }
 

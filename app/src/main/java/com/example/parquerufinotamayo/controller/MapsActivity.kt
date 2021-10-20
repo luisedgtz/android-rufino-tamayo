@@ -29,7 +29,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         btnSetLocation = findViewById(R.id.btnSetLocation)
 
         btnSetLocation.setOnClickListener(onSetLocationListener())
-
     }
 
     override fun onMapReady(p0: GoogleMap) {

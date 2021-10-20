@@ -16,4 +16,9 @@ interface ReportGetApi {
                     @Part report: MultipartBody.Part,
                     @Part reportPhoto: MultipartBody.Part?)
     : Call<ReportGet>
+
+    @DELETE("reports/{id}")
+    fun deleteReport(@Path("id")
+                     id: String)
+    : Call<ReportGet>
 }
