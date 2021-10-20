@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import com.example.parquerufinotamayo.LoginUtils
 import com.example.parquerufinotamayo.R
@@ -19,7 +20,7 @@ import com.example.parquerufinotamayo.model.repository.responseinterface.IRegist
 
 class CrearCuentaActivity : AppCompatActivity() {
 
-    lateinit var btnLogin : Button
+    lateinit var btnLogin : ImageButton
     lateinit var btnCrearCuenta : Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +47,7 @@ class CrearCuentaActivity : AppCompatActivity() {
             Model(LoginUtils.getToken(this)).register(user, object : IRegister {
                 override fun onSuccess(user: User?){
                     Toast.makeText(this@CrearCuentaActivity, "Cuenta creada exitosamente", Toast.LENGTH_SHORT).show()
-
+                    advanceToLoginActivity()
                 }
 
                 override fun onNoSuccess(code: Int, message: String){
@@ -71,11 +72,6 @@ class CrearCuentaActivity : AppCompatActivity() {
     }
 
     private fun advanceToLoginActivity(){
-        val LoginActivityIntent =
-            Intent(applicationContext, LoginActivity::class.java)
-        LoginActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(LoginActivityIntent)
+      finish()
     }
-
-
 }

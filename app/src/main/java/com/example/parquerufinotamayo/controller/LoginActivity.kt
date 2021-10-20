@@ -32,7 +32,6 @@ class LoginActivity : AppCompatActivity() {
         btnCrearCuenta.setOnClickListener{
             val crearCuentaActivityIntent =
                 Intent(applicationContext, CrearCuentaActivity::class.java)
-            crearCuentaActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(crearCuentaActivityIntent)
         }
 
@@ -93,7 +92,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun advanceToMainActivity(){
-
         val mainActivityIntent =
             Intent(applicationContext, MainActivity::class.java)
         mainActivityIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

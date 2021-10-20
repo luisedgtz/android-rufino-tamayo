@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.parquerufinotamayo.LoginUtils
@@ -41,26 +42,33 @@ class HomeFragment : Fragment() {
         model.getAllReports(object : IGetAllReports {
             override fun onSuccess(reports: List<ReportGet>?) {
                 if (reports != null) {
-                    val rvReports = requireView().findViewById<RecyclerView>(R.id.rvReports)
-                    val adapter =
-                        ReportsAdapter(reports as MutableList<ReportGet>, object : ReportsAdapter.OnItemClickListener {
-                            override fun onItemClick(item: ReportGet) {
-                                val intent = Intent(requireContext(), ReportActivity::class.java)
-                                intent.putExtra("id", item._id)
-                                intent.putExtra("creationDate", item.creationDate)
-                                intent.putExtra("attentionDate", item.attentionDate)
-                                intent.putExtra("username", item.username)
-                                intent.putExtra("title", item.title)
-                                intent.putExtra("description", item.description)
-                                intent.putExtra("images", item.images?.toTypedArray())
-                                intent.putExtra("category", item.category)
-                                intent.putExtra("lat", item.lat)
-                                intent.putExtra("long", item.long)
-                                startActivity(intent)
-                            }
-                        }, LoginUtils.getToken(requireContext()), requireContext())
-                    rvReports.adapter = adapter
-                    rvReports.layoutManager = LinearLayoutManager(requireContext())
+                    if (reports.isEmpty()) {
+                        val rvReports = requireView().findViewById<RecyclerView>(R.id.rvReports)
+                        val empty = requireView().findViewById<ConstraintLayout>(R.id.empty)
+                        rvReports.visibility = View.GONE
+                        empty.visibility = View.VISIBLE
+                    } else {
+                        val rvReports = requireView().findViewById<RecyclerView>(R.id.rvReports)
+                        val adapter =
+                            ReportsAdapter(reports as MutableList<ReportGet>, object : ReportsAdapter.OnItemClickListener {
+                                override fun onItemClick(item: ReportGet) {
+                                    val intent = Intent(requireContext(), ReportActivity::class.java)
+                                    intent.putExtra("id", item._id)
+                                    intent.putExtra("creationDate", item.creationDate)
+                                    intent.putExtra("attentionDate", item.attentionDate)
+                                    intent.putExtra("username", item.username)
+                                    intent.putExtra("title", item.title)
+                                    intent.putExtra("description", item.description)
+                                    intent.putExtra("images", item.images?.toTypedArray())
+                                    intent.putExtra("category", item.category)
+                                    intent.putExtra("lat", item.lat)
+                                    intent.putExtra("long", item.long)
+                                    startActivity(intent)
+                                }
+                            }, LoginUtils.getToken(requireContext()), requireContext())
+                        rvReports.adapter = adapter
+                        rvReports.layoutManager = LinearLayoutManager(requireContext())
+                    }
                 }
             }
 
