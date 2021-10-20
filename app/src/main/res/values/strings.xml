@@ -7,7 +7,7 @@
     <string name="imagetaken">ImageTaken</string>
     <string name="tellUs">Cuéntanos lo sucedido...</string>
     <string name="tomar_foto">Tomar Foto</string>
-    <string name="agregar_foto">Agregar foto</string>
+    <string name="agregar_loc">Agregar Ubicación</string>
     <string name="terminar_reporte">Terminar reporte</string>
     <string name="desc">Descripción:</string>
     <string name="catg">Categoría:</string>

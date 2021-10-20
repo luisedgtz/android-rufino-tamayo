@@ -55,4 +55,7 @@ dependencies {
     // Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
     compile 'jp.wasabeef:picasso-transformations:2.4.0'
+
+    //Play Services maps
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
 }

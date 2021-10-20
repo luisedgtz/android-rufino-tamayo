@@ -13,17 +13,22 @@ import com.example.parquerufinotamayo.R
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Location
 import android.provider.MediaStore
 import android.view.*
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.parquerufinotamayo.model.Model
 import com.example.parquerufinotamayo.model.entities.Category
 import com.example.parquerufinotamayo.model.entities.Report
 import com.example.parquerufinotamayo.model.repository.responseinterface.IGetAllCategories
 import com.example.parquerufinotamayo.model.repository.responseinterface.INewReport
+import com.google.android.gms.common.GooglePlayServicesRepairableException
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dalvik.system.PathClassLoader
 import java.io.ByteArrayOutputStream
 import java.util.*
 import kotlin.collections.ArrayList
@@ -32,11 +37,12 @@ import kotlin.collections.ArrayList
 class NewReportFragment : Fragment() {
     companion object{
         private const val CAMERA_PERMISSION_CODE = 100
+        private const val MAPS_REQUEST_CODE = 20;
     }
 
     private lateinit var btnTakePhoto : Button
     private lateinit var btnEndRp : Button
-    private lateinit var btnFromGallery : Button
+    private lateinit var btnAddLocation : Button
     private lateinit var editTxtRpTitle : EditText
     private lateinit var editTxtDescription : EditText
     private lateinit var reportImage: ImageView
@@ -44,6 +50,9 @@ class NewReportFragment : Fragment() {
 
     private lateinit var model : Model
     private lateinit var imageByteArray: ByteArray
+
+    private var lat: String = "25.645055";
+    private var lng: String = "-100.329168";
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +68,7 @@ class NewReportFragment : Fragment() {
         imageByteArray = ByteArray(0)
         btnTakePhoto = view.findViewById(R.id.btnTakePhoto)
         btnEndRp = view.findViewById(R.id.btnEndRp)
-        btnFromGallery = view.findViewById(R.id.btnFromGallery)
+        btnAddLocation = view.findViewById(R.id.btnAddLocation)
         reportImage = view.findViewById(R.id.reportImage)
         editTxtDescription = view.findViewById(R.id.editTxtDescription)
         editTxtRpTitle = view.findViewById(R.id.editTxtRpTitle)
@@ -70,6 +79,7 @@ class NewReportFragment : Fragment() {
         txtCategories.setAdapter(adapter)
 
         btnTakePhoto.setOnClickListener(clickListenerForTakePhoto())
+        btnAddLocation.setOnClickListener(clickListenerForLocation())
         btnEndRp.setOnClickListener(clickListenerForNewReport())
     }
 
@@ -182,4 +192,23 @@ class NewReportFragment : Fragment() {
                 Toast.makeText(requireContext(), "Picture was not taken", Toast.LENGTH_SHORT).show()
             }
         }
+
+    private fun clickListenerForLocation(): View.OnClickListener {
+        return View.OnClickListener {
+            val intent = Intent(requireContext(), MapsActivity::class.java)
+            intent.putExtra("lat", lat)
+            intent.putExtra("lng", lng)
+            startActivityForResult(intent, MAPS_REQUEST_CODE)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == MAPS_REQUEST_CODE &&  resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                lat = data.getStringExtra("Lat").toString()
+                lng = data.getStringExtra("Lng").toString()
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
 }
