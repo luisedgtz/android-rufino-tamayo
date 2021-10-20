@@ -125,7 +125,9 @@ class NewReportFragment : Fragment() {
                 txtReportTitle.text.toString(),
                 txtReportDescription.text.toString(),
                 null,
-                txtCategories.text.toString()
+                txtCategories.text.toString(),
+                lat,
+                lng
             )
             model.newReport(report, imageByteArray, object : INewReport {
                 override fun onSuccess(report: Report?) {

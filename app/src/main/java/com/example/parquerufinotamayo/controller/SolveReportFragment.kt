@@ -131,6 +131,8 @@ class SolveReportFragment : Fragment() {
                 null,
                 null,
                 ArrayList<String>(),
+                null,
+                null,
                 null
             )
             model.solveReport(helper, report, byteArr , object : ISolveReport {

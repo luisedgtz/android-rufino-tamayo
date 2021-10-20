@@ -10,5 +10,7 @@ class ReportGet(
     var title: String?,
     var description: String?,
     var images: List<String>?,
-    var category: String?){
+    var category: String?,
+    var lat: String?,
+    var long: String?){
 }
